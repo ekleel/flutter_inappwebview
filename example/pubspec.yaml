@@ -46,6 +46,7 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/video.html
     - assets/index.html
     - assets/page-1.html
     - assets/page-2.html

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=0.5, maximum-scale=0.5, minimum-scale=0.5">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <style>
+        html,
+        body {
+            padding: 0;
+            margin: 0;
+            height: 100%;
+            line-height: 0;
+            font-size: 0;
+        }
+
+        .twitter-tweet {
+            margin: 0 auto !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="tweet"></div>
+
+    <div id="test" style="height: 74px;width: 100px;background-color: aqua;"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/twitter-widgets@2.0.0/index.min.js"></script>
+
+    <script>
+        console.log('Hello!');
+
+        function init() {
+
+            TwitterWidgetsLoader.load(function (err, twttr) {
+                twttr.widgets.createTweet(
+                    "1285569646624739331",
+                    document.getElementById("tweet"),
+                    {
+                        lang: 'ar',
+                        conversation: 'none',
+                        linkColor: '#319795',
+                        theme: 'dark' === 'dark' ? 'dark' : 'light',
+                        dnt: true,
+                        align: 'center',
+
+                    }
+                ).then(function () {
+                    var height = document.getElementById("tweet").clientHeight;
+                    console.log('height:', height);
+                });
+            });
+        }
+        (function () {
+            init();
+        })();
+    </script>
+</body>
+
+</html>

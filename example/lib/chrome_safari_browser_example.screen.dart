@@ -23,28 +23,31 @@ class MyChromeSafariBrowser extends ChromeSafariBrowser {
 }
 
 class ChromeSafariBrowserExampleScreen extends StatefulWidget {
-  final ChromeSafariBrowser browser =
-      MyChromeSafariBrowser(browserFallback: InAppBrowser());
+  final ChromeSafariBrowser browser = MyChromeSafariBrowser(browserFallback: InAppBrowser());
 
   @override
-  _ChromeSafariBrowserExampleScreenState createState() =>
-      _ChromeSafariBrowserExampleScreenState();
+  _ChromeSafariBrowserExampleScreenState createState() => _ChromeSafariBrowserExampleScreenState();
 }
 
-class _ChromeSafariBrowserExampleScreenState
-    extends State<ChromeSafariBrowserExampleScreen> {
+class _ChromeSafariBrowserExampleScreenState extends State<ChromeSafariBrowserExampleScreen> {
   @override
   void initState() {
-    widget.browser.addMenuItem(ChromeSafariBrowserMenuItem(id: 1, label: 'Custom item menu 1', action: (url, title) {
-      print('Custom item menu 1 clicked!');
-      print(url);
-      print(title);
-    }));
-    widget.browser.addMenuItem(ChromeSafariBrowserMenuItem(id: 2, label: 'Custom item menu 2', action: (url, title) {
-      print('Custom item menu 2 clicked!');
-      print(url);
-      print(title);
-    }));
+    widget.browser.addMenuItem(ChromeSafariBrowserMenuItem(
+        id: 1,
+        label: 'Custom item menu 1',
+        action: (url, title) {
+          print('Custom item menu 1 clicked!');
+          print(url);
+          print(title);
+        }));
+    widget.browser.addMenuItem(ChromeSafariBrowserMenuItem(
+        id: 2,
+        label: 'Custom item menu 2 x',
+        action: (url, title) {
+          print('Custom item menu 2 clicked!');
+          print(url);
+          print(title);
+        }));
     super.initState();
   }
 
@@ -52,21 +55,30 @@ class _ChromeSafariBrowserExampleScreenState
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: Text(
-          "ChromeSafariBrowser",
-        )),
+          title: Text(
+            "ChromeSafariBrowser",
+          ),
+          brightness: Brightness.light,
+        ),
         drawer: myDrawer(context: context),
         body: Center(
           child: RaisedButton(
               onPressed: () async {
                 await widget.browser.open(
-                    url: "https://flutter.dev/",
-                    options: ChromeSafariBrowserClassOptions(
-                        android: AndroidChromeCustomTabsOptions(addDefaultShareMenuItem: false, keepAliveEnabled: true),
-                        ios: IOSSafariOptions(
-                            dismissButtonStyle: IOSSafariDismissButtonStyle.CLOSE,
-                            presentationStyle: IOSUIModalPresentationStyle.OVER_FULL_SCREEN
-                        )));
+                  url: "https://flutter.dev/",
+                  options: ChromeSafariBrowserClassOptions(
+                    android: AndroidChromeCustomTabsOptions(
+                      addDefaultShareMenuItem: false,
+                      keepAliveEnabled: true,
+                      toolbarBackgroundColor: 'red',
+                      enableUrlBarHiding: false,
+                    ),
+                    ios: IOSSafariOptions(
+                      dismissButtonStyle: IOSSafariDismissButtonStyle.CLOSE,
+                      presentationStyle: IOSUIModalPresentationStyle.OVER_FULL_SCREEN,
+                    ),
+                  ),
+                );
               },
               child: Text("Open Chrome Safari Browser")),
         ));

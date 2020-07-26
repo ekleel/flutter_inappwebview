@@ -6,6 +6,10 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'main.dart';
 
 class MyInAppBrowser extends InAppBrowser {
+  MyInAppBrowser({@required this.context});
+
+  final BuildContext context;
+
   @override
   Future onBrowserCreated() async {
     print("\n\nBrowser Created!\n\n");
@@ -19,6 +23,10 @@ class MyInAppBrowser extends InAppBrowser {
   @override
   Future onLoadStop(String url) async {
     print("\n\nStopped $url\n\n");
+
+    if (url.contains('get-started')) {
+      hide();
+    }
   }
 
   @override
@@ -43,15 +51,15 @@ class MyInAppBrowser extends InAppBrowser {
     return ShouldOverrideUrlLoadingAction.ALLOW;
   }
 
-  @override
-  void onLoadResource(LoadedResource response) {
-    print("Started at: " +
-        response.startTime.toString() +
-        "ms ---> duration: " +
-        response.duration.toString() +
-        "ms " +
-        response.url);
-  }
+  // @override
+  // void onLoadResource(LoadedResource response) {
+  //   print("Started at: " +
+  //       response.startTime.toString() +
+  //       "ms ---> duration: " +
+  //       response.duration.toString() +
+  //       "ms " +
+  //       response.url);
+  // }
 
   @override
   void onConsoleMessage(ConsoleMessage consoleMessage) {
@@ -64,51 +72,61 @@ class MyInAppBrowser extends InAppBrowser {
 }
 
 class InAppBrowserExampleScreen extends StatefulWidget {
-  final MyInAppBrowser browser = new MyInAppBrowser();
-
   @override
-  _InAppBrowserExampleScreenState createState() =>
-      new _InAppBrowserExampleScreenState();
+  _InAppBrowserExampleScreenState createState() => new _InAppBrowserExampleScreenState();
 }
 
 class _InAppBrowserExampleScreenState extends State<InAppBrowserExampleScreen> {
+  MyInAppBrowser browser;
   @override
   void initState() {
     super.initState();
+
+    browser = MyInAppBrowser(context: context);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            title: Text(
+      appBar: AppBar(
+        brightness: Brightness.light,
+        title: Text(
           "InAppBrowser",
-        )),
-        drawer: myDrawer(context: context),
-        body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                RaisedButton(
-                    onPressed: () async {
-                      await widget.browser.openFile(
-                          assetFilePath: "assets/index.html",
-                          options: InAppBrowserClassOptions(
-                              inAppWebViewGroupOptions: InAppWebViewGroupOptions(
-                                  crossPlatform: InAppWebViewOptions(
-                            debuggingEnabled: true,
-                            useShouldOverrideUrlLoading: true,
-                            useOnLoadResource: true,
-                          ))));
-                    },
-                    child: Text("Open In-App Browser")),
-                Container(height: 40),
-                RaisedButton(
-                    onPressed: () async {
-                      await InAppBrowser.openWithSystemBrowser(
-                          url: "https://flutter.dev/");
-                    },
-                    child: Text("Open System Browser")),
-            ])));
+        ),
+      ),
+      drawer: myDrawer(context: context),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            RaisedButton(
+              onPressed: () async {
+                await browser.openUrl(
+                  // assetFilePath: "assets/index.html",
+                  url: 'https://flutter.dev/',
+                  options: InAppBrowserClassOptions(
+                    inAppWebViewGroupOptions: InAppWebViewGroupOptions(
+                      crossPlatform: InAppWebViewOptions(
+                        debuggingEnabled: true,
+                        useShouldOverrideUrlLoading: true,
+                        useOnLoadResource: true,
+                      ),
+                    ),
+                  ),
+                );
+              },
+              child: Text("Open In-App Browser"),
+            ),
+            Container(height: 40),
+            RaisedButton(
+              onPressed: () async {
+                await InAppBrowser.openWithSystemBrowser(url: "https://flutter.dev/");
+              },
+              child: Text("Open System Browser"),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

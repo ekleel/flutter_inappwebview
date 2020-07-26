@@ -1,17 +1,21 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 import 'package:flutter_inappwebview_example/chrome_safari_browser_example.screen.dart';
+import 'package:flutter_inappwebview_example/embeds_screen.dart';
 import 'package:flutter_inappwebview_example/headless_in_app_webview.screen.dart';
 import 'package:flutter_inappwebview_example/in_app_webiew_example.screen.dart';
 import 'package:flutter_inappwebview_example/in_app_browser_example.screen.dart';
+
 // import 'package:permission_handler/permission_handler.dart';
 
 // InAppLocalhostServer localhostServer = new InAppLocalhostServer();
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  RendererBinding.instance.initPersistentFrameCallback();
 //  await Permission.camera.request();
 //  await Permission.storage.request();
   // await localhostServer.start();
@@ -53,6 +57,12 @@ Drawer myDrawer({@required BuildContext context}) {
             Navigator.pushReplacementNamed(context, '/HeadlessInAppWebView');
           },
         ),
+        ListTile(
+          title: Text('Embeds'),
+          onTap: () {
+            Navigator.pushReplacementNamed(context, '/Embeds');
+          },
+        ),
       ],
     ),
   );
@@ -64,7 +74,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   void initState() {
     super.initState();
@@ -77,14 +86,12 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        initialRoute: '/',
-        routes: {
-          '/': (context) => InAppWebViewExampleScreen(),
-          '/InAppBrowser': (context) => InAppBrowserExampleScreen(),
-          '/ChromeSafariBrowser': (context) => ChromeSafariBrowserExampleScreen(),
-          '/HeadlessInAppWebView': (context) => HeadlessInAppWebViewExampleScreen(),
-        }
-    );
+    return MaterialApp(initialRoute: '/', routes: {
+      '/': (context) => InAppWebViewExampleScreen(),
+      '/InAppBrowser': (context) => InAppBrowserExampleScreen(),
+      '/ChromeSafariBrowser': (context) => ChromeSafariBrowserExampleScreen(),
+      '/HeadlessInAppWebView': (context) => HeadlessInAppWebViewExampleScreen(),
+      '/Embeds': (context) => EmbedsScreen(),
+    });
   }
 }
